@@ -1,0 +1,10 @@
+# Streamlit 应用部署最小依赖集
+# 不包含 torch / timesfm, 因为 Streamlit Cloud 只跑 Web 展示, 不实时训练/推理
+streamlit==1.50.0
+streamlit-option-menu==0.4.0
+plotly==6.7.0
+pandas>=2.0
+numpy>=1.23
+scipy>=1.10
+pillow>=10.0
+pyarrow>=14.0

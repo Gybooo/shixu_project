@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# 虚拟环境
+env/
+venv/
+.venv/
+d2l_env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# 模型缓存 + TimesFM 官方源码 (太大, 部署时 pip 装即可, 不传 GitHub)
+hf_cache/
+timesfm/
+
+# 原始 30MB InfluxDB CSV (已由 app/resources/fields.parquet 替代)
+# 本地运行时需要 "时序/MPB01_6.11 08_18.csv", 但部署到 streamlit cloud 不需要
+时序/
+
+# 大模型权重缓存
+*.safetensors
+*.bin
+
+# 临时文件
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# streamlit 运行时
+.streamlit/secrets.toml
+
+# 中间产物
+output/compare_cache.npz
+output/decompose_cache.npz
+output/horizon_cache.npz
+output/_lstm_cache.npz
+
+# 旧版 PPT (只保留最终提交版)
+output/振动预测项目报告.pptx
+output/振动预测项目报告_v2.pptx
+output/振动预测项目报告_v3.pptx
