@@ -85,20 +85,16 @@ with st.sidebar:
         },
     )
 
-    # 侧栏底部信息
+    # 侧栏底部信息 (用常规 block 布局, 不用 absolute 避免重叠)
     st.markdown(
-        f"""
-        <div style="position: absolute; bottom: 1.5rem; left: 1rem; right: 1rem;
-                    padding-top: 1rem; border-top: 1px solid {COLORS["border"]};
-                    font-size: 0.75rem; color: {COLORS["text_light"]};">
-            <div style="margin-bottom: 0.5rem;">
-                <b style="color: {COLORS["text_mid"]};">设备</b> &nbsp;MPB_01<br>
-                <b style="color: {COLORS["text_mid"]};">字段</b> &nbsp;11 个物理量<br>
-                <b style="color: {COLORS["text_mid"]};">采样</b> &nbsp;1 Hz (重采样)<br>
-                <b style="color: {COLORS["text_mid"]};">模型</b> &nbsp;LSTM + TimesFM 2.5
-            </div>
-            <div style="opacity: 0.6; margin-top: 0.8rem;">
-                研究原型 · 基于 SINOR 7 模块架构
+        """
+        <div class="sidebar-footer">
+            <b>设备</b> &nbsp;MPB_01<br>
+            <b>字段</b> &nbsp;11 个物理量<br>
+            <b>采样</b> &nbsp;1 Hz (重采样)<br>
+            <b>模型</b> &nbsp;LSTM + TimesFM 2.5
+            <div style="opacity: 0.6; margin-top: 0.7rem;">
+                研究原型 · SINOR 7 模块架构
             </div>
         </div>
         """,

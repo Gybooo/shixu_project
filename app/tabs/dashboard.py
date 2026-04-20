@@ -61,8 +61,7 @@ def render():
         return
 
     # 按族分组展示
-    for group, color_name in [("合成幅值", "primary"), ("加速度RMS", "primary"),
-                              ("速度RMS", "primary"), ("冲击类", "primary")]:
+    for group in ["合成幅值", "加速度RMS", "速度RMS", "冲击类"]:
         sub = df[df["类别"] == group]
         if len(sub) == 0:
             continue
@@ -73,23 +72,19 @@ def render():
             grade_letter = row["可用性"][0]
             with cols[i]:
                 st.markdown(f"""
-                <div class="metric-card">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-                        <div style="font-size:0.72rem;color:#94A3B8;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">
-                            {status_dot(kind)}{group}
-                        </div>
+                <div class="field-card">
+                    <div class="field-card-header">
+                        <span>{status_dot(kind)}{group}</span>
                         {badge(grade_letter, kind)}
                     </div>
-                    <div style="font-size:1.15rem;font-weight:700;color:#0F172A;margin-bottom:0.3rem;letter-spacing:-0.01em;">
-                        {row["属性"]}
+                    <div class="field-card-name">{row["属性"]}</div>
+                    <div class="field-card-metric">
+                        <span>NRMSE</span>
+                        <span class="field-card-metric-value">{row["NRMSE_TFM%"]:.1f}%</span>
                     </div>
-                    <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#475569;">
-                        <div>NRMSE</div>
-                        <div style="font-weight:600;">{row["NRMSE_TFM%"]:.1f}%</div>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:#475569;margin-top:0.2rem;">
-                        <div>SNR</div>
-                        <div style="font-weight:600;">{row["SNR"]:.2f}</div>
+                    <div class="field-card-metric">
+                        <span>SNR</span>
+                        <span class="field-card-metric-value">{row["SNR"]:.2f}</span>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)

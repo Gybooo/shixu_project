@@ -122,31 +122,27 @@ def render():
             for icon, txt in reasons
         ])
 
-        st.markdown(f"""
-        <div class="card" style="border-left: 4px solid {color};">
-            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
-                <div style="background:{color};color:white;width:56px;height:56px;border-radius:16px;
-                            display:flex;align-items:center;justify-content:center;
-                            font-size:1.8rem;font-weight:800;">
-                    {grade}
-                </div>
-                <div>
-                    <div style="font-size:1.2rem;font-weight:700;color:#0F172A;">{grade_desc}</div>
-                    <div style="font-size:0.82rem;color:#94A3B8;margin-top:0.2rem;">
-                        判据版本 v2 · 对 MPB_01 的 11 字段命中率 100%
-                    </div>
-                </div>
-            </div>
-            <div style="font-size:0.9rem;color:#475569;margin-bottom:0.5rem;font-weight:600;">评估依据</div>
-            <ul style="list-style:none;padding:0;margin:0;font-size:0.88rem;color:#475569;">
-                {reasons_html}
-            </ul>
-            <div style="margin-top:1rem;padding-top:0.8rem;border-top:1px solid #E5E9F2;">
-                <div style="font-size:0.82rem;color:#94A3B8;font-weight:600;margin-bottom:0.3rem;">部署建议</div>
-                <div style="font-size:0.92rem;color:#0F172A;font-weight:500;">{advice}</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="card" style="border-left: 4px solid {color};">'
+            f'  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">'
+            f'    <div style="background:{color};color:white;width:54px;height:54px;border-radius:14px;'
+            f'                display:flex;align-items:center;justify-content:center;'
+            f'                font-size:1.7rem;font-weight:800;flex-shrink:0;">{grade}</div>'
+            f'    <div>'
+            f'      <div style="font-size:1.15rem;font-weight:700;color:#0F172A;line-height:1.3;">{grade_desc}</div>'
+            f'      <div style="font-size:0.78rem;color:#94A3B8;margin-top:0.25rem;line-height:1.4;">'
+            f'        判据版本 v2 · 对 MPB_01 的 11 字段命中率 100%</div>'
+            f'    </div>'
+            f'  </div>'
+            f'  <div style="font-size:0.88rem;color:#475569;margin-bottom:0.5rem;font-weight:600;">评估依据</div>'
+            f'  <ul style="list-style:none;padding:0;margin:0;font-size:0.85rem;color:#475569;">{reasons_html}</ul>'
+            f'  <div style="margin-top:0.9rem;padding-top:0.7rem;border-top:1px solid #E5E9F2;">'
+            f'    <div style="font-size:0.78rem;color:#94A3B8;font-weight:600;margin-bottom:0.25rem;">部署建议</div>'
+            f'    <div style="font-size:0.9rem;color:#0F172A;font-weight:500;line-height:1.5;">{advice}</div>'
+            f'  </div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
 
         # 位置指示
         st.markdown(f"""
