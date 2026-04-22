@@ -20,6 +20,12 @@ d2l_env/
 hf_cache/
 timesfm/
 
+# 前端构建产物与依赖
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+*.log
+
 # 原始 30MB InfluxDB CSV (已由 app/resources/fields.parquet 替代)
 # 本地运行时需要 "时序/MPB01_6.11 08_18.csv", 但部署到 streamlit cloud 不需要
 时序/

@@ -1,0 +1,202 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "startTime": "2024-06-11T07:56:46",
+      "endTime": "2024-06-11T07:56:49",
+      "durationSeconds": 4,
+      "minValue": 0.1266,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "已处理"
+    },
+    {
+      "id": 2,
+      "startTime": "2024-06-11T07:57:07",
+      "endTime": "2024-06-11T07:57:14",
+      "durationSeconds": 7,
+      "minValue": 0.0338,
+      "severity": "B",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 3,
+      "startTime": "2024-06-11T08:04:10",
+      "endTime": "2024-06-11T08:04:24",
+      "durationSeconds": 15,
+      "minValue": 0.0304,
+      "severity": "C",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 4,
+      "startTime": "2024-06-11T08:17:29",
+      "endTime": "2024-06-11T08:17:33",
+      "durationSeconds": 5,
+      "minValue": 0.0339,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 5,
+      "startTime": "2024-06-11T08:18:04",
+      "endTime": "2024-06-11T08:18:12",
+      "durationSeconds": 9,
+      "minValue": 0.0332,
+      "severity": "B",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 6,
+      "startTime": "2024-06-11T08:18:34",
+      "endTime": "2024-06-11T08:18:45",
+      "durationSeconds": 12,
+      "minValue": 0.0336,
+      "severity": "C",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 7,
+      "startTime": "2024-06-11T08:19:05",
+      "endTime": "2024-06-11T08:19:09",
+      "durationSeconds": 5,
+      "minValue": 0.0375,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 8,
+      "startTime": "2024-06-11T08:42:44",
+      "endTime": "2024-06-11T08:43:27",
+      "durationSeconds": 41,
+      "minValue": 0.023,
+      "severity": "C",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 9,
+      "startTime": "2024-06-11T08:58:23",
+      "endTime": "2024-06-11T08:58:26",
+      "durationSeconds": 4,
+      "minValue": 0.0382,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "已处理"
+    },
+    {
+      "id": 10,
+      "startTime": "2024-06-11T08:58:31",
+      "endTime": "2024-06-11T08:58:33",
+      "durationSeconds": 3,
+      "minValue": 0.0375,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "已处理"
+    },
+    {
+      "id": 11,
+      "startTime": "2024-06-11T08:59:10",
+      "endTime": "2024-06-11T08:59:14",
+      "durationSeconds": 5,
+      "minValue": 0.0369,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 12,
+      "startTime": "2024-06-11T09:01:13",
+      "endTime": "2024-06-11T09:01:50",
+      "durationSeconds": 38,
+      "minValue": 0.0296,
+      "severity": "C",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 13,
+      "startTime": "2024-06-11T09:09:14",
+      "endTime": "2024-06-11T09:09:19",
+      "durationSeconds": 6,
+      "minValue": 0.0335,
+      "severity": "B",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 14,
+      "startTime": "2024-06-11T09:24:00",
+      "endTime": "2024-06-11T09:24:03",
+      "durationSeconds": 4,
+      "minValue": 0.0784,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "已处理"
+    },
+    {
+      "id": 15,
+      "startTime": "2024-06-11T09:30:11",
+      "endTime": "2024-06-11T09:30:14",
+      "durationSeconds": 4,
+      "minValue": 0.0609,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "已处理"
+    },
+    {
+      "id": 16,
+      "startTime": "2024-06-11T09:30:47",
+      "endTime": "2024-06-11T09:30:49",
+      "durationSeconds": 3,
+      "minValue": 0.0267,
+      "severity": "A",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "已处理"
+    },
+    {
+      "id": 17,
+      "startTime": "2024-06-11T09:36:44",
+      "endTime": "2024-06-11T09:38:28",
+      "durationSeconds": 99,
+      "minValue": 0.0301,
+      "severity": "C",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    },
+    {
+      "id": 18,
+      "startTime": "2024-06-11T09:49:51",
+      "endTime": "2024-06-11T09:50:55",
+      "durationSeconds": 55,
+      "minValue": 0.0274,
+      "severity": "C",
+      "field": "Magnitude",
+      "type": "振动骤降",
+      "status": "未处理"
+    }
+  ]
+}

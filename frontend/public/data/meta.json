@@ -1,0 +1,48 @@
+{
+  "device": "MPB_01",
+  "fields": [
+    "Magnitude",
+    "aRMSX",
+    "aRMSY",
+    "aRMSZ",
+    "vRMSX",
+    "vRMSY",
+    "vRMSZ",
+    "vRMSM",
+    "ShockX",
+    "ShockY",
+    "ShockZ"
+  ],
+  "groups": {
+    "Magnitude": "合成幅值",
+    "aRMSX": "加速度RMS",
+    "aRMSY": "加速度RMS",
+    "aRMSZ": "加速度RMS",
+    "vRMSX": "速度RMS",
+    "vRMSY": "速度RMS",
+    "vRMSZ": "速度RMS",
+    "vRMSM": "速度RMS",
+    "ShockX": "冲击类",
+    "ShockY": "冲击类",
+    "ShockZ": "冲击类"
+  },
+  "units": {
+    "Magnitude": "g",
+    "aRMSX": "g",
+    "aRMSY": "g",
+    "aRMSZ": "g",
+    "vRMSX": "mm/s",
+    "vRMSY": "mm/s",
+    "vRMSZ": "mm/s",
+    "vRMSM": "mm/s",
+    "ShockX": "g",
+    "ShockY": "g",
+    "ShockZ": "g"
+  },
+  "groupColors": {
+    "合成幅值": "#4F7CFF",
+    "加速度RMS": "#10B981",
+    "速度RMS": "#7C3AED",
+    "冲击类": "#EF4444"
+  }
+}
