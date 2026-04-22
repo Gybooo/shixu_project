@@ -6,6 +6,11 @@
       </template>
     </PageHeader>
 
+    <!-- 字段健康度进度条表格 (对标 SINOR 第 4 页) -->
+    <div class="mb-2">
+      <FieldHealthPanel :fields="summary?.fields || []" />
+    </div>
+
     <!-- KPI -->
     <el-row :gutter="16" class="mb-2" v-if="currentField">
       <el-col :span="6"><KpiCard label="LSTM MAE" :value="currentField.lstmMae.toFixed(4)" :unit="currentField.unit" :icon="DataAnalysis" /></el-col>
@@ -102,6 +107,7 @@ import { GridComponent, TooltipComponent, LegendComponent, MarkLineComponent } f
 import { DataAnalysis, MagicStick, TrendCharts, Promotion } from '@element-plus/icons-vue'
 import PageHeader from '@/components/PageHeader.vue'
 import KpiCard from '@/components/KpiCard.vue'
+import FieldHealthPanel from '@/components/FieldHealthPanel.vue'
 import { ensureLoaded, summary, forecast, groupColor } from '@/stores/data'
 
 use([CanvasRenderer, LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, MarkLineComponent])

@@ -1,6 +1,11 @@
 <template>
   <div v-loading="!summary">
-    <PageHeader title="运行状态监控" subtitle="字段时序曲线与趋势分析" module="运行状态监控" />
+    <PageHeader title="运行状态监控" subtitle="设备通道拓扑 · 字段时序曲线与趋势分析" module="运行状态监控" />
+
+    <!-- 产线拓扑 -->
+    <div class="mb-2">
+      <ProductionLineTopo :fields="fields" @select="onSelect" />
+    </div>
 
     <el-card class="mb-2">
       <el-row :gutter="16" align="middle">
@@ -64,6 +69,7 @@ import { LineChart, BarChart } from 'echarts/charts'
 import { GridComponent, TooltipComponent, LegendComponent, DataZoomComponent, MarkLineComponent } from 'echarts/components'
 import dayjs from 'dayjs'
 import PageHeader from '@/components/PageHeader.vue'
+import ProductionLineTopo from '@/components/ProductionLineTopo.vue'
 import { ensureLoaded, summary, timeseries, groupColor } from '@/stores/data'
 
 use([CanvasRenderer, LineChart, BarChart, GridComponent, TooltipComponent, LegendComponent, DataZoomComponent, MarkLineComponent])
@@ -79,6 +85,7 @@ onMounted(async () => { await ensureLoaded(); draw() })
 watch([() => summary.value, () => timeseries.value], () => draw())
 
 function draw() {}  // placeholder; computed 自动更新
+function onSelect(field) { selectedField.value = field }
 
 // SavGol 近似: 移动均值 (前端不做完整 SavGol, 用滚动均值近似趋势)
 function rollingMean(arr, window) {

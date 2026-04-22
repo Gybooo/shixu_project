@@ -41,7 +41,7 @@
       <aside class="admin-sider">
         <el-menu
           :default-active="activeMenu"
-          :default-openeds="['monitoring-group', 'analysis-group']"
+          :default-openeds="['monitoring-group', 'analysis-group', 'settings-group']"
           router
           class="admin-menu"
         >
@@ -87,6 +87,25 @@
             <el-icon><Document /></el-icon>
             <span>研究报告</span>
           </el-menu-item>
+
+          <el-sub-menu index="settings-group">
+            <template #title>
+              <el-icon><Setting /></el-icon>
+              <span>系统设置</span>
+            </template>
+            <el-menu-item index="/settings/users">
+              <el-icon><User /></el-icon>
+              <span>用户管理</span>
+            </el-menu-item>
+            <el-menu-item index="/settings/alarm">
+              <el-icon><Bell /></el-icon>
+              <span>告警策略</span>
+            </el-menu-item>
+            <el-menu-item index="/settings/fields">
+              <el-icon><SetUp /></el-icon>
+              <span>字段配置</span>
+            </el-menu-item>
+          </el-sub-menu>
         </el-menu>
 
         <div class="sider-footer">

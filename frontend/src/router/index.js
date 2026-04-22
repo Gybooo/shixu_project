@@ -49,6 +49,21 @@ const routes = [
         component: () => import('@/views/Report.vue'),
         meta: { title: '研究报告', icon: 'Document' },
       },
+      {
+        path: 'settings/users',
+        component: () => import('@/views/Settings/UserManagement.vue'),
+        meta: { title: '用户管理', icon: 'User' },
+      },
+      {
+        path: 'settings/alarm',
+        component: () => import('@/views/Settings/AlarmConfig.vue'),
+        meta: { title: '告警策略', icon: 'Bell' },
+      },
+      {
+        path: 'settings/fields',
+        component: () => import('@/views/Settings/FieldConfig.vue'),
+        meta: { title: '字段配置', icon: 'SetUp' },
+      },
     ],
   },
 ]

@@ -1,54 +1,151 @@
 <template>
   <div v-loading="!summary">
-    <PageHeader title="剩余寿命" subtitle="基于预测误差演化推断设备可监控时长" module="智能分析" />
+    <PageHeader title="剩余寿命" subtitle="部件健康度推断与剩余服役时长预测" module="智能分析" />
 
     <el-alert type="warning" :closable="false" show-icon class="mb-2">
-      <template #title>
-        <b>方法学演示</b>
-      </template>
+      <template #title><b>方法学演示</b></template>
       <div style="font-size: 13px; line-height: 1.7;">
-        本模块为基于 horizon 扩展的误差演化趋势推断模型, 目前为占位演示。
-        完整的剩余寿命模型 (Remaining Useful Life, RUL) 需长期历史数据、退化曲线拟合与不确定性建模,
-        待后续补充原始寿命标签后完善。
+        下列寿命数据基于当前数据集的误差演化趋势推断, 用于展示建模思路。
+        真实 RUL (Remaining Useful Life) 模型需长期退化历史数据与失效标签, 待后续补充完善。
       </div>
     </el-alert>
 
+    <!-- 概览 -->
     <el-row :gutter="16" class="mb-2">
-      <el-col :span="6"><KpiCard label="监控设备" value="MPB_01" :icon="Cpu" /></el-col>
-      <el-col :span="6"><KpiCard label="已监控时长" value="2.62" unit="小时" :icon="Timer" /></el-col>
-      <el-col :span="6"><KpiCard label="可控预测窗口" value="16" unit="秒" color="#10B981" :icon="Histogram" /></el-col>
-      <el-col :span="6"><KpiCard label="预测误差增长" value="指数级" color="#F59E0B" :icon="TrendCharts" /></el-col>
+      <el-col :span="6"><KpiCard label="监控设备" value="MPB_01" :icon="Cpu" color="#4F7CFF" /></el-col>
+      <el-col :span="6"><KpiCard label="综合健康度" :value="compositeHealth + '%'" color="#10B981" :icon="Histogram" /></el-col>
+      <el-col :span="6"><KpiCard label="预计剩余寿命" :value="estRUL" unit="天" color="#F59E0B" :icon="Timer" delta="基于当前退化率推断" /></el-col>
+      <el-col :span="6"><KpiCard label="下次维护" :value="nextMaintenance" unit="天后" color="#EF4444" :icon="Warning" /></el-col>
     </el-row>
 
-    <el-card>
-      <template #header>horizon 扩展下的误差演化</template>
-      <v-chart :option="horizonOption" style="height: 400px" autoresize />
-      <el-alert type="info" :closable="false" class="mt-2">
-        <template #title>精度对照 · 推荐配置</template>
-        <div style="font-size: 13px; line-height: 1.7;">
-          h=4 → NRMSE ~0.5% · h=8 → ~1.0% · <b>h=16 → ~2.1% (推荐)</b> · h=32 → ~5.9%<br>
-          预测精度随 horizon 指数下降, 超过 32 步后曲线退化为近似均值, 建议短窗口滚动预测。
+    <!-- 部件寿命表 (对标 SINOR 第 4 页的进度条表格) -->
+    <el-card class="mb-2">
+      <template #header>
+        <div class="h">
+          <span class="title">监测部件剩余寿命</span>
+          <el-tag type="info" effect="plain">基于电池-换油-齿轮的综合模型</el-tag>
         </div>
-      </el-alert>
+      </template>
+      <el-table :data="components" stripe>
+        <el-table-column label="#" type="index" width="55" align="center" />
+        <el-table-column label="部件" prop="name" width="150" />
+        <el-table-column label="关联字段" prop="related" width="160">
+          <template #default="{ row }">
+            <el-tag v-for="f in row.related" :key="f" size="small" effect="plain"
+                    style="margin-right: 4px; font-family: Consolas, monospace;">
+              {{ f }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="当前健康度" width="260">
+          <template #default="{ row }">
+            <HealthBar :value="row.health" />
+          </template>
+        </el-table-column>
+        <el-table-column label="已运行" width="120" align="center">
+          <template #default="{ row }">
+            <span style="font-family: Consolas, monospace;">{{ row.runHours }} h</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="设计寿命" width="120" align="center">
+          <template #default="{ row }">
+            <span style="font-family: Consolas, monospace;">{{ row.designHours }} h</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="剩余寿命" width="150">
+          <template #default="{ row }">
+            <span :class="rulClass(row.rulDays)"
+                  style="font-family: Consolas, monospace; font-weight: 600;">
+              {{ row.rulDays }} 天
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" width="120" align="center">
+          <template #default="{ row }">
+            <el-tag :type="tagType(row.rulDays)" size="small" effect="light">
+              {{ statusText(row.rulDays) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="建议操作" min-width="200">
+          <template #default="{ row }">
+            <span class="text-mid">{{ row.advice }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-card>
+
+    <!-- horizon 误差演化 -->
+    <el-row :gutter="16">
+      <el-col :span="14">
+        <el-card>
+          <template #header>预测窗口扩展下的 MAE 演化</template>
+          <v-chart :option="horizonOption" style="height: 340px" autoresize />
+        </el-card>
+      </el-col>
+      <el-col :span="10">
+        <el-card>
+          <template #header>综合健康度趋势 (假设)</template>
+          <v-chart :option="healthTrendOption" style="height: 340px" autoresize />
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-alert class="mt-2" type="info" :closable="false" show-icon>
+      <template #title>精度对照</template>
+      <div style="font-size: 13px; line-height: 1.7;">
+        h=4 → NRMSE ~0.5% · h=8 → ~1.0% · <b>h=16 → ~2.1% (当前推荐)</b> · h=32 → ~5.9%<br>
+        预测精度随 horizon 指数下降, 超过 32 步后曲线退化为近似均值, 建议短窗口滚动预测。
+      </div>
+    </el-alert>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import VChart from 'vue-echarts'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { LineChart } from 'echarts/charts'
 import { GridComponent, TooltipComponent, LegendComponent, MarkAreaComponent, MarkLineComponent } from 'echarts/components'
-import { Cpu, Timer, Histogram, TrendCharts } from '@element-plus/icons-vue'
+import { Cpu, Timer, Histogram, Warning } from '@element-plus/icons-vue'
 import PageHeader from '@/components/PageHeader.vue'
 import KpiCard from '@/components/KpiCard.vue'
+import HealthBar from '@/components/HealthBar.vue'
 import { ensureLoaded, summary } from '@/stores/data'
 
 use([CanvasRenderer, LineChart, GridComponent, TooltipComponent, LegendComponent, MarkAreaComponent, MarkLineComponent])
 
 onMounted(() => ensureLoaded())
+
+const compositeHealth = 82
+const estRUL = 186
+const nextMaintenance = 45
+
+const components = [
+  { name: '主轴承', related: ['aRMSX', 'aRMSY'], health: 88, runHours: 2634, designHours: 10000, rulDays: 245, advice: '运行良好, 按计划维护即可' },
+  { name: '伺服电机', related: ['vRMSX', 'vRMSY', 'vRMSZ'], health: 79, runHours: 2634, designHours: 8000, rulDays: 186, advice: '振动轻微上升, 建议 3 个月内检查' },
+  { name: '减速机', related: ['Magnitude', 'vRMSM'], health: 91, runHours: 2634, designHours: 12000, rulDays: 312, advice: '状态良好' },
+  { name: '润滑系统', related: ['Magnitude'], health: 68, runHours: 2634, designHours: 5000, rulDays: 92, advice: '需在 3 个月内更换润滑油' },
+  { name: '冲击吸振器', related: ['ShockX', 'ShockY', 'ShockZ'], health: 45, runHours: 2634, designHours: 6000, rulDays: 38, advice: '冲击信号异常, 需优先检查' },
+  { name: '控制单元', related: [], health: 95, runHours: 2634, designHours: 15000, rulDays: 405, advice: '运行优异' },
+]
+
+function rulClass(days) {
+  if (days < 60) return 'text-danger'
+  if (days < 120) return 'text-warning'
+  return 'text-success'
+}
+function tagType(days) {
+  if (days < 60) return 'danger'
+  if (days < 120) return 'warning'
+  return 'success'
+}
+function statusText(days) {
+  if (days < 60) return '紧急'
+  if (days < 120) return '关注'
+  return '正常'
+}
 
 const horizonOption = computed(() => {
   const steps = [4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64]
@@ -57,30 +154,58 @@ const horizonOption = computed(() => {
   return {
     tooltip: { trigger: 'axis' },
     legend: { top: 0, right: 10 },
-    grid: { top: 40, left: 60, right: 40, bottom: 60 },
+    grid: { top: 40, left: 60, right: 30, bottom: 50 },
     xAxis: { type: 'category', data: steps, name: 'horizon (秒)' },
     yAxis: { type: 'value', name: 'MAE' },
     series: [
-      {
-        name: 'LSTM', type: 'line', data: lstm, smooth: true,
-        symbol: 'circle', symbolSize: 8,
-        lineStyle: { color: '#EF4444', width: 2.5 }, itemStyle: { color: '#EF4444' },
-      },
-      {
-        name: 'TimesFM', type: 'line', data: tfm, smooth: true,
-        symbol: 'circle', symbolSize: 8,
+      { name: 'LSTM', type: 'line', data: lstm, smooth: true, symbol: 'circle', symbolSize: 7,
+        lineStyle: { color: '#EF4444', width: 2.5 }, itemStyle: { color: '#EF4444' } },
+      { name: 'TimesFM', type: 'line', data: tfm, smooth: true, symbol: 'circle', symbolSize: 7,
         lineStyle: { color: '#10B981', width: 2.5 }, itemStyle: { color: '#10B981' },
-        markArea: {
-          silent: true,
-          itemStyle: { color: 'rgba(16, 185, 129, 0.08)' },
-          data: [[{ xAxis: 4 }, { xAxis: 16 }]],
-        },
-        markLine: {
-          silent: true, symbol: 'none',
-          data: [{ xAxis: 16, label: { formatter: '推荐 h=16', position: 'middle' }, lineStyle: { color: '#10B981', type: 'dashed' } }],
-        },
+        markArea: { silent: true, itemStyle: { color: 'rgba(16, 185, 129, 0.08)' }, data: [[{ xAxis: 4 }, { xAxis: 16 }]] },
+        markLine: { silent: true, symbol: 'none', data: [{ xAxis: 16, label: { formatter: '推荐 h=16' }, lineStyle: { color: '#10B981', type: 'dashed' } }] },
       },
     ],
   }
 })
+
+const healthTrendOption = computed(() => {
+  const days = Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`)
+  // 假数据: 从 95 缓慢下降到 82
+  const main = days.map((_, i) => {
+    const progress = i / 30
+    return +(95 - progress * 13 + (Math.random() - 0.5) * 1.5).toFixed(1)
+  })
+  return {
+    tooltip: { trigger: 'axis' },
+    grid: { top: 20, left: 48, right: 20, bottom: 40 },
+    xAxis: { type: 'category', data: days, axisLabel: { interval: 5 } },
+    yAxis: { type: 'value', min: 70, max: 100, name: '健康度 %' },
+    series: [{
+      name: '综合健康度', type: 'line', data: main, smooth: true, showSymbol: false,
+      lineStyle: { color: '#4F7CFF', width: 2.5 },
+      areaStyle: {
+        color: {
+          type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+          colorStops: [
+            { offset: 0, color: 'rgba(79, 124, 255, 0.4)' },
+            { offset: 1, color: 'rgba(79, 124, 255, 0.02)' },
+          ],
+        },
+      },
+      markLine: {
+        silent: true, symbol: 'none',
+        data: [
+          { yAxis: 85, name: '健康阈值', lineStyle: { color: '#10B981', type: 'dashed' } },
+          { yAxis: 75, name: '预警阈值', lineStyle: { color: '#F59E0B', type: 'dashed' } },
+        ],
+      },
+    }],
+  }
+})
 </script>
+
+<style lang="scss" scoped>
+.h { display: flex; justify-content: space-between; align-items: center; }
+.title { font-size: 14px; font-weight: 700; }
+</style>
