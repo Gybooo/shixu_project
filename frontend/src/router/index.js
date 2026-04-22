@@ -55,6 +55,11 @@ const routes = [
         meta: { title: '用户管理', icon: 'User' },
       },
       {
+        path: 'settings/roles',
+        component: () => import('@/views/Settings/RoleManagement.vue'),
+        meta: { title: '角色管理', icon: 'UserFilled' },
+      },
+      {
         path: 'settings/alarm',
         component: () => import('@/views/Settings/AlarmConfig.vue'),
         meta: { title: '告警策略', icon: 'Bell' },
@@ -63,6 +68,11 @@ const routes = [
         path: 'settings/fields',
         component: () => import('@/views/Settings/FieldConfig.vue'),
         meta: { title: '字段配置', icon: 'SetUp' },
+      },
+      {
+        path: 'settings/lines',
+        component: () => import('@/views/Settings/LineConfig.vue'),
+        meta: { title: '产线配置', icon: 'Connection' },
       },
     ],
   },

@@ -25,13 +25,37 @@
           <el-icon><Monitor /></el-icon>
           大屏模式
         </router-link>
-        <el-tooltip content="设置" placement="bottom">
-          <div class="header-icon-btn"><el-icon><Setting /></el-icon></div>
+        <el-tooltip content="系统设置" placement="bottom">
+          <router-link to="/settings/users" class="header-icon-btn">
+            <el-icon><Setting /></el-icon>
+          </router-link>
         </el-tooltip>
-        <div class="header-user">
-          <el-avatar :size="32" :style="{ background: '#4F7CFF' }">A</el-avatar>
-          <span>admin</span>
-        </div>
+        <el-dropdown trigger="click">
+          <div class="header-user">
+            <el-avatar :size="32" :style="{ background: '#4F7CFF' }">A</el-avatar>
+            <div class="header-user-info">
+              <div class="header-user-name">admin</div>
+              <div class="header-user-role">超级管理员</div>
+            </div>
+            <el-icon class="header-user-arrow"><ArrowDown /></el-icon>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>
+                <el-icon><User /></el-icon> 个人中心
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-icon><Lock /></el-icon> 修改密码
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <el-icon><Bell /></el-icon> 消息中心
+              </el-dropdown-item>
+              <el-dropdown-item divided>
+                <el-icon><SwitchButton /></el-icon> 退出登录
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </header>
 
@@ -97,6 +121,10 @@
               <el-icon><User /></el-icon>
               <span>用户管理</span>
             </el-menu-item>
+            <el-menu-item index="/settings/roles">
+              <el-icon><UserFilled /></el-icon>
+              <span>角色管理</span>
+            </el-menu-item>
             <el-menu-item index="/settings/alarm">
               <el-icon><Bell /></el-icon>
               <span>告警策略</span>
@@ -105,6 +133,10 @@
               <el-icon><SetUp /></el-icon>
               <span>字段配置</span>
             </el-menu-item>
+            <el-menu-item index="/settings/lines">
+              <el-icon><Connection /></el-icon>
+              <span>产线配置</span>
+            </el-menu-item>
           </el-sub-menu>
         </el-menu>
 
@@ -112,9 +144,14 @@
           <div class="sider-footer-label">平台状态</div>
           <div class="sider-footer-status">
             <span class="status-dot pulse-dot"></span>
-            <span>在线 · 11 字段全覆盖</span>
+            <span>在线 · 11 通道覆盖</span>
           </div>
-          <div class="sider-footer-version">v1.0 · Research Demo</div>
+          <div class="sider-footer-period">
+            <el-icon :size="11"><Calendar /></el-icon>
+            <span>监测周期 &nbsp;</span>
+            <b>2024-06-11 07:23 — 09:59</b>
+          </div>
+          <div class="sider-footer-version">v1.0 · SINOR Compatible</div>
         </div>
       </aside>
 
@@ -242,6 +279,27 @@ onUnmounted(() => {
   border-left: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
   font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  &:hover { opacity: 0.85; }
+}
+.header-user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.header-user-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+.header-user-role {
+  font-size: 10px;
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+}
+.header-user-arrow {
+  font-size: 12px;
+  opacity: 0.7;
 }
 
 /* 主体布局 */
@@ -282,8 +340,18 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   color: var(--text-mid);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   font-size: 12px;
+}
+.sider-footer-period {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-light);
+  font-size: 10.5px;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  b { color: var(--text-mid); font-weight: 600; font-family: Consolas, monospace; }
 }
 .status-dot {
   width: 7px;

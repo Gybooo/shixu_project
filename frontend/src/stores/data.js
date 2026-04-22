@@ -2,6 +2,7 @@
  * 全局数据加载 (基于 fetch 读 public/data/*.json)
  */
 import { ref, shallowRef } from 'vue'
+import dayjs from 'dayjs'
 
 const BASE = import.meta.env.BASE_URL + 'data/'
 
@@ -21,6 +22,31 @@ export const alarms = shallowRef(null)
 
 const loading = ref(false)
 const loaded = ref(false)
+
+// 监测周期元信息 (从原始数据得到)
+export const monitorPeriod = shallowRef({
+  startTime: '2024-06-11T07:23:04',
+  endTime: '2024-06-11T09:59:59',
+  durationHours: 2.62,
+  startTimeDisplay: '2024-06-11 07:23',
+  endTimeDisplay: '09:59',
+})
+
+/**
+ * 时间平移: 将原始数据 (2024-06-11) 的时刻平移到"今天"
+ * 保留时分秒,仅替换日期,让 UI 呈现"当日监测"的连贯感
+ */
+export function shiftToToday(iso) {
+  if (!iso) return iso
+  const src = dayjs(iso)
+  const today = dayjs()
+  return today
+    .hour(src.hour())
+    .minute(src.minute())
+    .second(src.second())
+    .millisecond(src.millisecond())
+    .toISOString()
+}
 
 export async function ensureLoaded() {
   if (loaded.value) return
@@ -42,6 +68,15 @@ export async function ensureLoaded() {
       loadJson('correlation.json'),
       loadJson('alarms.json'),
     ])
+    // 平移告警时间到今天 (2024 → today)
+    if (a && a.events) {
+      a.events = a.events.map(e => ({
+        ...e,
+        startTime: shiftToToday(e.startTime),
+        endTime: shiftToToday(e.endTime),
+      }))
+    }
+
     meta.value = m
     summary.value = s
     timeseries.value = t

@@ -103,20 +103,20 @@ const scenarios = [
 const downloads = [
   { name: '研究报告 (PPT)',
     filename: 'MPB_01振动预测研究报告.pptx',
-    url: 'https://github.com/Gybooo/shixu_project/raw/main/output/MPB_01%E6%8C%AF%E5%8A%A8%E9%A2%84%E6%B5%8B%E7%A0%94%E7%A9%B6%E6%8A%A5%E5%91%8A.pptx',
+    url: import.meta.env.BASE_URL + 'downloads/report.pptx',
     desc: '24 页幻灯片, 覆盖数据概览、算法对比、信号分解、全字段验证等章节' },
   { name: '全字段对比表 (CSV)',
     filename: '全字段泛化测试.csv',
-    url: 'https://github.com/Gybooo/shixu_project/raw/main/output/%E5%85%A8%E5%AD%97%E6%AE%B5%E6%B3%9B%E5%8C%96%E6%B5%8B%E8%AF%95.csv',
-    desc: '11 字段的 NRMSE / SNR / ACF / 可用性档位汇总' },
+    url: import.meta.env.BASE_URL + 'downloads/fields-summary.csv',
+    desc: '11 字段的预测精度 / 信号质量 / 长程稳定性 / 可用性档位汇总' },
   { name: '全字段验证报告 (MD)',
     filename: '全字段验证报告.md',
-    url: 'https://github.com/Gybooo/shixu_project/raw/main/output/%E5%85%A8%E5%AD%97%E6%AE%B5%E9%AA%8C%E8%AF%81%E6%8A%A5%E5%91%8A.md',
+    url: import.meta.env.BASE_URL + 'downloads/validation-report.md',
     desc: '完整验证过程、三项主要发现、判据修订与落地建议' },
   { name: '多属性结果 (CSV)',
     filename: '多属性泛化测试_v2.csv',
-    url: 'https://github.com/Gybooo/shixu_project/raw/main/output/%E5%A4%9A%E5%B1%9E%E6%80%A7%E6%B3%9B%E5%8C%96%E6%B5%8B%E8%AF%95_v2.csv',
-    desc: '4 个代表字段的详细指标, 含 NRMSE / SNR / 提升幅度' },
+    url: import.meta.env.BASE_URL + 'downloads/multifield-results.csv',
+    desc: '4 个代表字段的详细指标, 含预测精度 / 信号质量 / 模型提升幅度' },
 ]
 </script>
 

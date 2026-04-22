@@ -13,9 +13,9 @@
     <!-- 概览 -->
     <el-row :gutter="16" class="mb-2">
       <el-col :span="6"><KpiCard label="监控设备" value="MPB_01" :icon="Cpu" color="#4F7CFF" /></el-col>
-      <el-col :span="6"><KpiCard label="综合健康度" :value="compositeHealth + '%'" color="#10B981" :icon="Histogram" /></el-col>
-      <el-col :span="6"><KpiCard label="预计剩余寿命" :value="estRUL" unit="天" color="#F59E0B" :icon="Timer" delta="基于当前退化率推断" /></el-col>
-      <el-col :span="6"><KpiCard label="下次维护" :value="nextMaintenance" unit="天后" color="#EF4444" :icon="Warning" /></el-col>
+      <el-col :span="6"><KpiCard label="综合健康度" :value="compositeHealth + '%'" :color="compositeColor" :icon="Histogram" delta="部件加权计算" /></el-col>
+      <el-col :span="6"><KpiCard label="预计剩余寿命" :value="estRUL" unit="天" color="#F59E0B" :icon="Timer" delta="基于部件最短剩余推断" /></el-col>
+      <el-col :span="6"><KpiCard label="下次维护" :value="nextMaintenance" unit="天后" color="#EF4444" :icon="Warning" delta="润滑系统触发" /></el-col>
     </el-row>
 
     <!-- 部件寿命表 (对标 SINOR 第 4 页的进度条表格) -->
@@ -118,18 +118,77 @@ use([CanvasRenderer, LineChart, GridComponent, TooltipComponent, LegendComponent
 
 onMounted(() => ensureLoaded())
 
-const compositeHealth = 82
-const estRUL = 186
-const nextMaintenance = 45
-
-const components = [
-  { name: '主轴承', related: ['aRMSX', 'aRMSY'], health: 88, runHours: 2634, designHours: 10000, rulDays: 245, advice: '运行良好, 按计划维护即可' },
-  { name: '伺服电机', related: ['vRMSX', 'vRMSY', 'vRMSZ'], health: 79, runHours: 2634, designHours: 8000, rulDays: 186, advice: '振动轻微上升, 建议 3 个月内检查' },
-  { name: '减速机', related: ['Magnitude', 'vRMSM'], health: 91, runHours: 2634, designHours: 12000, rulDays: 312, advice: '状态良好' },
-  { name: '润滑系统', related: ['Magnitude'], health: 68, runHours: 2634, designHours: 5000, rulDays: 92, advice: '需在 3 个月内更换润滑油' },
-  { name: '冲击吸振器', related: ['ShockX', 'ShockY', 'ShockZ'], health: 45, runHours: 2634, designHours: 6000, rulDays: 38, advice: '冲击信号异常, 需优先检查' },
-  { name: '控制单元', related: [], health: 95, runHours: 2634, designHours: 15000, rulDays: 405, advice: '运行优异' },
+// 部件定义 (健康度由关联字段的 NRMSE 和 SNR 加权计算)
+const COMPONENTS_DEF = [
+  { name: '主轴承', related: ['aRMSX', 'aRMSY'], runHours: 2634, designHours: 10000, bias: 0 },
+  { name: '伺服电机', related: ['vRMSX', 'vRMSY', 'vRMSZ'], runHours: 2634, designHours: 8000, bias: 0 },
+  { name: '减速机', related: ['Magnitude', 'vRMSM'], runHours: 2634, designHours: 12000, bias: 3 },
+  { name: '润滑系统', related: ['Magnitude', 'vRMSM'], runHours: 2634, designHours: 5000, bias: -18 },
+  { name: '冲击吸振器', related: ['ShockX', 'ShockY', 'ShockZ'], runHours: 2634, designHours: 6000, bias: 0 },
+  { name: '控制单元', related: [], runHours: 2634, designHours: 15000, bias: 10 },
 ]
+
+/**
+ * 部件健康度 = 关联字段 NRMSE 均值 映射 + 部件偏置
+ * 打通字段健康度体系与部件健康度体系,避免两套数据互相矛盾
+ */
+function calcHealth(relatedFields, bias, fieldMap) {
+  if (!relatedFields || relatedFields.length === 0) {
+    return Math.max(0, Math.min(100, 85 + bias))  // 无关联字段(如控制单元): 基线 85 + bias
+  }
+  const nrmseAvg = relatedFields.reduce((s, f) => {
+    return s + (fieldMap[f]?.nrmseTfm ?? 20)
+  }, 0) / relatedFields.length
+  // NRMSE 10% → 健康 85; NRMSE 40% → 健康 40
+  const base = 100 - nrmseAvg * 1.5
+  return Math.max(5, Math.min(98, base + bias))
+}
+
+const components = computed(() => {
+  if (!summary.value) return []
+  const fieldMap = {}
+  summary.value.fields.forEach(f => { fieldMap[f.field] = f })
+  return COMPONENTS_DEF.map(c => {
+    const health = calcHealth(c.related, c.bias, fieldMap)
+    // 剩余寿命 ≈ (设计寿命 - 已运行) × (健康度 / 100) / 24 天
+    const remainingHours = (c.designHours - c.runHours) * (health / 100)
+    const rulDays = Math.max(1, Math.round(remainingHours / 24))
+    return {
+      ...c,
+      health: Math.round(health),
+      rulDays,
+      advice: healthAdvice(health, c.name),
+    }
+  })
+})
+
+function healthAdvice(h, name) {
+  if (h >= 85) return '状态良好, 按计划维护即可'
+  if (h >= 70) return '指标轻微上升, 建议 3 个月内复检'
+  if (h >= 50) return `${name} 指标持续下降, 建议 1 个月内维护`
+  return `${name} 信号异常, 建议优先排查`
+}
+
+// 综合健康度 = 所有部件健康度平均
+const compositeHealth = computed(() => {
+  if (!components.value.length) return 0
+  return Math.round(components.value.reduce((s, c) => s + c.health, 0) / components.value.length)
+})
+const compositeColor = computed(() => {
+  const v = compositeHealth.value
+  if (v >= 80) return '#10B981'
+  if (v >= 60) return '#F59E0B'
+  return '#EF4444'
+})
+
+// 预计剩余寿命 = 部件最短剩余寿命
+const estRUL = computed(() => {
+  if (!components.value.length) return 0
+  return Math.min(...components.value.map(c => c.rulDays))
+})
+
+// 下次维护 = 最短剩余寿命的 25% (提前预警)
+const nextMaintenance = computed(() => Math.max(1, Math.floor(estRUL.value * 0.25)))
 
 function rulClass(days) {
   if (days < 60) return 'text-danger'

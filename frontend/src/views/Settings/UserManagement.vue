@@ -73,13 +73,13 @@ const pageSize = 10
 
 const users = [
   { id: 1, username: 'admin', name: '系统管理员', role: '超级管理员', dept: '研发中心', email: 'admin@mpb01.cn', lastLogin: '2026-04-22 09:14:28', active: true, createdAt: '2025-10-08 14:32:01' },
-  { id: 2, username: 'wangze', name: '王泽', role: '工艺工程师', dept: '喷涂一线', email: 'wangze@mpb01.cn', lastLogin: '2026-04-22 08:56:12', active: true, createdAt: '2025-10-22 07:57:15' },
-  { id: 3, username: 'gulun', name: '顾伦', role: '设备工程师', dept: '喷涂二线', email: 'gulun@mpb01.cn', lastLogin: '2026-04-21 16:48:07', active: true, createdAt: '2025-11-07 14:10:32' },
+  { id: 2, username: 'wangze', name: '王泽', role: '工艺工程师', dept: '设备运维部', email: 'wangze@mpb01.cn', lastLogin: '2026-04-22 08:56:12', active: true, createdAt: '2025-10-22 07:57:15' },
+  { id: 3, username: 'gulun', name: '顾伦', role: '设备工程师', dept: '设备运维部', email: 'gulun@mpb01.cn', lastLogin: '2026-04-21 16:48:07', active: true, createdAt: '2025-11-07 14:10:32' },
   { id: 4, username: 'jiguang', name: '纪广', role: '数据分析师', dept: '智能制造部', email: 'jiguang@mpb01.cn', lastLogin: '2026-04-22 09:02:45', active: true, createdAt: '2025-07-11 07:15:22' },
-  { id: 5, username: 'lixiang', name: '李祥', role: '运维工程师', dept: '涂胶一线', email: 'lixiang@mpb01.cn', lastLogin: '2026-04-19 11:27:33', active: true, createdAt: '2025-12-03 10:45:18' },
-  { id: 6, username: 'chenying', name: '陈英', role: '质量工程师', dept: '质检部', email: 'chenying@mpb01.cn', lastLogin: '2026-04-20 14:22:51', active: true, createdAt: '2026-01-15 09:33:42' },
-  { id: 7, username: 'zhouming', name: '周明', role: '操作员', dept: '喷涂一线', email: 'zhouming@mpb01.cn', lastLogin: '2026-04-22 07:30:18', active: false, createdAt: '2026-02-20 13:18:05' },
-  { id: 8, username: 'huangli', name: '黄丽', role: '操作员', dept: '涂胶二线', email: 'huangli@mpb01.cn', lastLogin: '2026-04-18 09:45:22', active: true, createdAt: '2026-03-01 11:27:33' },
+  { id: 5, username: 'lixiang', name: '李祥', role: '运维工程师', dept: '设备运维部', email: 'lixiang@mpb01.cn', lastLogin: '2026-04-19 11:27:33', active: true, createdAt: '2025-12-03 10:45:18' },
+  { id: 6, username: 'chenying', name: '陈英', role: '质量工程师', dept: '质量管理部', email: 'chenying@mpb01.cn', lastLogin: '2026-04-20 14:22:51', active: true, createdAt: '2026-01-15 09:33:42' },
+  { id: 7, username: 'zhouming', name: '周明', role: '振动监测组', dept: '设备运维部', email: 'zhouming@mpb01.cn', lastLogin: '2026-04-22 07:30:18', active: false, createdAt: '2026-02-20 13:18:05' },
+  { id: 8, username: 'huangli', name: '黄丽', role: '振动监测组', dept: '智能制造部', email: 'huangli@mpb01.cn', lastLogin: '2026-04-18 09:45:22', active: true, createdAt: '2026-03-01 11:27:33' },
 ]
 
 const filtered = computed(() => {

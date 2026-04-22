@@ -26,10 +26,10 @@
 
     <!-- 9 宫格主体 -->
     <div class="dash-grid" v-if="summary">
-      <!-- 左上 · 今日报警 -->
+      <!-- 左上 · 当日告警 -->
       <div class="dash-panel">
         <div class="panel-title">
-          <span class="arrow">»</span> 今日告警详情 <span class="arrow">«</span>
+          <span class="arrow">»</span> 当日告警详情 <span class="arrow">«</span>
         </div>
         <div class="alarm-total">
           <div class="alarm-total-label">共计</div>
