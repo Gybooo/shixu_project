@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column width="170">
         <template #header>
-          <MetricHeader label="预测精度" tip="基于 NRMSE 指标 (MAE / 趋势标准差): 反映模型预测值与真实值的相对偏离程度" />
+          <MetricHeader label="预测精度" tip="内部综合指标: 反映预测结果相对设备正常波动的偏离程度" />
         </template>
         <template #default="{ row }">
           <HealthBar :value="row.healthSignal" />
@@ -48,7 +48,7 @@
       </el-table-column>
       <el-table-column width="170">
         <template #header>
-          <MetricHeader label="模型置信度" tip="基于模型在 60 个测试窗口的误差一致性: 反映预测结果是否稳定可信" />
+          <MetricHeader label="引擎置信度" tip="内部综合指标: 反映智能预测结果在连续窗口内是否稳定可信" />
         </template>
         <template #default="{ row }">
           <HealthBar :value="row.healthForecast" />
@@ -56,7 +56,7 @@
       </el-table-column>
       <el-table-column width="170">
         <template #header>
-          <MetricHeader label="信号质量" tip="基于 SNR (信噪比 = 趋势标准差 / 噪声标准差): 反映信号骨架相对噪声的强度" />
+          <MetricHeader label="信号质量" tip="内部综合指标: 反映采集信号中有效趋势信息是否充分" />
         </template>
         <template #default="{ row }">
           <HealthBar :value="row.healthRedundancy" />
@@ -64,7 +64,7 @@
       </el-table-column>
       <el-table-column width="170">
         <template #header>
-          <MetricHeader label="长程稳定性" tip="基于 ACF lag-16 自相关系数: 反映信号在 16 秒后仍保留多少可预测性" />
+          <MetricHeader label="长程稳定性" tip="内部综合指标: 反映设备状态在短期未来窗口内是否保持连续稳定" />
         </template>
         <template #default="{ row }">
           <HealthBar :value="row.healthStability" />

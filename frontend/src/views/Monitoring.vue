@@ -16,16 +16,16 @@
           </el-select>
         </el-col>
         <el-col :span="4">
-          <div class="label">叠加趋势</div>
+          <div class="label">叠加平滑趋势</div>
           <el-switch v-model="showTrend" @change="draw" />
         </el-col>
         <el-col :span="14">
           <div class="stats-row" v-if="currentField">
             <div class="stat"><span class="stat-label">均值</span><span class="stat-val">{{ currentField.mean.toFixed(3) }}</span></div>
             <div class="stat"><span class="stat-label">趋势 std</span><span class="stat-val">{{ currentField.trendStd.toFixed(3) }}</span></div>
-            <div class="stat"><span class="stat-label">SNR</span><span class="stat-val">{{ currentField.snr.toFixed(2) }}</span></div>
-            <div class="stat"><span class="stat-label">ACF-16</span><span class="stat-val">{{ currentField.acfLag16.toFixed(3) }}</span></div>
-            <div class="stat"><span class="stat-label">判据</span>
+            <div class="stat"><span class="stat-label">信号质量</span><span class="stat-val">{{ currentField.snr.toFixed(2) }}</span></div>
+            <div class="stat"><span class="stat-label">稳定性</span><span class="stat-val">{{ currentField.acfLag16.toFixed(3) }}</span></div>
+            <div class="stat"><span class="stat-label">状态</span>
               <span :class="'badge-' + currentField.grade.toLowerCase()">{{ currentField.grade }} 档</span>
             </div>
           </div>
@@ -117,7 +117,7 @@ const chartOption = computed(() => {
   }]
   if (trend) {
     series.push({
-      name: '趋势 (滚动均值 ±45s)', type: 'line', data: trend,
+      name: '平滑趋势', type: 'line', data: trend,
       showSymbol: false,
       lineStyle: { color: '#1E3A8A', width: 2.2 },
     })

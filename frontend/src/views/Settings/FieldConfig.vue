@@ -39,14 +39,14 @@
             <el-tag size="small" effect="plain">1 Hz</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="分解方法" width="150" align="center">
+        <el-table-column label="数据处理" width="150" align="center">
           <template #default>
-            <el-tag size="small" type="info">SavGol(61,3)</el-tag>
+            <el-tag size="small" type="info">标准趋势清洗</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="预测模型" width="140" align="center">
+        <el-table-column label="智能引擎" width="140" align="center">
           <template #default>
-            <el-tag size="small" type="success">TimesFM 2.5</el-tag>
+            <el-tag size="small" type="success">预测引擎 V1</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="当前档位" width="100" align="center">

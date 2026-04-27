@@ -1,9 +1,9 @@
 <template>
   <div>
-    <PageHeader title="研究报告" subtitle="核心结论 · 工程建议 · 资料下载" />
+    <PageHeader title="方案资料" subtitle="系统能力 · 业务价值 · 资料下载" />
 
     <!-- 7 大发现 -->
-    <div class="section-title">七项主要发现</div>
+    <div class="section-title">七项系统能力</div>
     <el-row :gutter="14" class="mb-2">
       <el-col v-for="(f, i) in findings" :key="i" :span="12">
         <div class="finding-card">
@@ -47,30 +47,30 @@
 
     <!-- 技术栈 -->
     <el-card class="mt-3">
-      <template #header>技术栈</template>
+      <template #header>系统架构</template>
       <el-row :gutter="16">
         <el-col :span="6">
           <div class="tech-row">
             <div class="tech-label">前端</div>
-            <div class="tech-value">Vue 3 + Element Plus + ECharts</div>
+            <div class="tech-value">工业级 Web 管理台 + 可视化大屏</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="tech-row">
             <div class="tech-label">数据处理</div>
-            <div class="tech-value">pandas · scipy.signal</div>
+            <div class="tech-value">设备状态数据清洗与指标汇聚</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="tech-row">
-            <div class="tech-label">模型</div>
-            <div class="tech-value">PyTorch LSTM · TimesFM 2.5</div>
+            <div class="tech-label">智能引擎</div>
+            <div class="tech-value">预测预警引擎 + 健康评估引擎</div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="tech-row">
             <div class="tech-label">部署</div>
-            <div class="tech-value">Vite · Vercel</div>
+            <div class="tech-value">前后端解耦 · 云端发布</div>
           </div>
         </el-col>
       </el-row>
@@ -83,28 +83,28 @@ import { Document, Download } from '@element-plus/icons-vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 const findings = [
-  { title: '原始信号不可逐点预测', desc: '1s 尺度 lag-1 ACF=0.87, lag-60 仅 0.09, 接近高频噪声, 逐点预测必然退化为均值。' },
-  { title: '信号分解显著提升可预测性', desc: 'SavGol(61,3) 分解后的趋势信号 lag-1 ACF 提升至 1.00, 成为可预测的建模对象。' },
-  { title: 'horizon=16 为最佳平衡点', desc: 'MAE 随窗口指数增长. horizon=16 在误差 (约 2.1%) 与业务价值之间达到最优平衡。' },
-  { title: 'TimesFM 零样本预测优于 LSTM', desc: '11 个字段中 TimesFM 于 10 个领先 LSTM, 平均提升约 41%, 且无需训练与微调。' },
-  { title: '物理量族内一致性强', desc: '族内 NRMSE 标准差 ≤ 2%, 支持族级预判, 新字段按族归档, 无需逐字段训练。' },
-  { title: '冲击类信号整族不适用', desc: 'ShockX/Y/Z 族 SNR < 0.4, NRMSE 33-48%, 需改用事件检测或分位数回归。' },
-  { title: '三指标判据命中率 100%', desc: 'ACF lag-16 + SNR + NRMSE 组成的可用性判据 v2 对 11 字段命中率 11/11。' },
+  { title: '多通道状态监控', desc: '覆盖 MPB_01 的 11 个振动相关通道, 支持设备状态、趋势变化与波动水平的集中展示。' },
+  { title: '实时告警管理', desc: '对振动骤降、信号中断、持续异常等事件进行自动识别, 支持分级、查询、处置与追溯。' },
+  { title: '智能预警分析', desc: '对未来短时间窗口内的设备状态进行提前评估, 辅助运维人员提前发现潜在异常。' },
+  { title: '健康度评估', desc: '从预测精度、信号质量、稳定性等维度形成综合健康评分, 支持 A/B/C 档位管理。' },
+  { title: '根因追溯辅助', desc: '基于多字段联动关系定位相关通道, 帮助工程人员快速缩小故障排查范围。' },
+  { title: '剩余寿命管理', desc: '通过部件健康度和运行时长生成维护建议, 为后续接入完整寿命评估能力预留接口。' },
+  { title: '可扩展系统框架', desc: '预留用户、角色、告警策略、字段配置、产线配置等模块, 便于后续对接真实业务流程。' },
 ]
 
 const scenarios = [
-  { label: '场景一', scene: '振动趋势监测', config: 'SavGol(61,3) + TimesFM + h=16', metric: 'NRMSE ~14%', color: '#10B981' },
-  { label: '场景二', scene: '短期实时预测', config: 'SavGol(31,2) + TimesFM + h=8', metric: 'NRMSE ~7%', color: '#10B981' },
-  { label: '场景三', scene: '异常事件检测', config: '原始信号 + LSTM + 残差三级告警', metric: '高召回', color: '#F59E0B' },
-  { label: '场景四', scene: '新字段接入', config: 'ACF + SNR 预判 → 判据 v2', metric: '零训练', color: '#4F7CFF' },
-  { label: '场景五', scene: '冲击信号监控', config: 'ShockX/Y/Z 事件检测', metric: '替代方案', color: '#EF4444' },
+  { label: '场景一', scene: '振动趋势监测', config: '标准趋势清洗 + 智能预测引擎 + 16秒预警窗口', metric: '推荐', color: '#10B981' },
+  { label: '场景二', scene: '短期实时预测', config: '短窗口滚动预警 + 高刷新频率状态评估', metric: '低延迟', color: '#10B981' },
+  { label: '场景三', scene: '异常事件检测', config: '原始信号监测 + 事件触发 + 分级告警', metric: '高召回', color: '#F59E0B' },
+  { label: '场景四', scene: '新字段接入', config: '自动计算信号质量与稳定性 → 智能分档', metric: '快速接入', color: '#4F7CFF' },
+  { label: '场景五', scene: '冲击信号监控', config: '脉冲事件识别 + 人工复核 + 专项阈值', metric: '专项策略', color: '#EF4444' },
 ]
 
 const downloads = [
   { name: '研究报告 (PPT)',
     filename: 'MPB_01振动预测研究报告.pptx',
     url: import.meta.env.BASE_URL + 'downloads/report.pptx',
-    desc: '24 页幻灯片, 覆盖数据概览、算法对比、信号分解、全字段验证等章节' },
+    desc: '完整汇报材料, 覆盖系统能力、页面展示、数据概览与部署建议' },
   { name: '全字段对比表 (CSV)',
     filename: '全字段泛化测试.csv',
     url: import.meta.env.BASE_URL + 'downloads/fields-summary.csv',
@@ -112,11 +112,11 @@ const downloads = [
   { name: '全字段验证报告 (MD)',
     filename: '全字段验证报告.md',
     url: import.meta.env.BASE_URL + 'downloads/validation-report.md',
-    desc: '完整验证过程、三项主要发现、判据修订与落地建议' },
+    desc: '系统验证过程、主要发现与落地建议' },
   { name: '多属性结果 (CSV)',
     filename: '多属性泛化测试_v2.csv',
     url: import.meta.env.BASE_URL + 'downloads/multifield-results.csv',
-    desc: '4 个代表字段的详细指标, 含预测精度 / 信号质量 / 模型提升幅度' },
+    desc: '4 个代表字段的详细指标, 含预测精度 / 信号质量 / 引擎提升幅度' },
 ]
 </script>
 

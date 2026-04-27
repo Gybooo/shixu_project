@@ -1,8 +1,8 @@
 <template>
   <div v-loading="!summary || !forecast">
-    <PageHeader title="预警分析" subtitle="LSTM 本地训练 vs TimesFM 零样本 · 16 步未来窗口预测" module="智能分析">
+    <PageHeader title="预警分析" subtitle="设备状态智能预测 · 16 秒未来窗口预警" module="智能分析">
       <template #actions>
-        <el-tag type="primary" effect="plain">SavGol(61,3) + h=16</el-tag>
+        <el-tag type="primary" effect="plain">智能预测引擎 · 16 秒窗口</el-tag>
       </template>
     </PageHeader>
 
@@ -13,10 +13,10 @@
 
     <!-- KPI -->
     <el-row :gutter="16" class="mb-2" v-if="currentField">
-      <el-col :span="6"><KpiCard label="LSTM MAE" :value="currentField.lstmMae.toFixed(4)" :unit="currentField.unit" :icon="DataAnalysis" /></el-col>
-      <el-col :span="6"><KpiCard label="TimesFM MAE (零样本)" :value="currentField.tfmMae.toFixed(4)" :unit="currentField.unit" color="#10B981" :icon="MagicStick" /></el-col>
-      <el-col :span="6"><KpiCard label="NRMSE (TFM)" :value="currentField.nrmseTfm.toFixed(1)" unit="%" :color="nrmseColor" :icon="TrendCharts" /></el-col>
-      <el-col :span="6"><KpiCard label="TFM 相对 LSTM" :value="(currentField.tfmImprove > 0 ? '+' : '') + currentField.tfmImprove.toFixed(1)" unit="%" :color="currentField.tfmImprove > 0 ? '#10B981' : '#EF4444'" :icon="Promotion" /></el-col>
+      <el-col :span="6"><KpiCard label="基准误差" :value="currentField.lstmMae.toFixed(4)" :unit="currentField.unit" :icon="DataAnalysis" /></el-col>
+      <el-col :span="6"><KpiCard label="智能引擎误差" :value="currentField.tfmMae.toFixed(4)" :unit="currentField.unit" color="#10B981" :icon="MagicStick" /></el-col>
+      <el-col :span="6"><KpiCard label="预测偏差指数" :value="currentField.nrmseTfm.toFixed(1)" unit="%" :color="nrmseColor" :icon="TrendCharts" /></el-col>
+      <el-col :span="6"><KpiCard label="智能引擎提升" :value="(currentField.tfmImprove > 0 ? '+' : '') + currentField.tfmImprove.toFixed(1)" unit="%" :color="currentField.tfmImprove > 0 ? '#10B981' : '#EF4444'" :icon="Promotion" /></el-col>
     </el-row>
 
     <!-- 预测曲线 -->
@@ -37,7 +37,7 @@
 
       <v-chart :option="forecastOption" style="height: 380px" autoresize />
       <div class="sub-info" v-if="sampleMae !== null">
-        本窗口 LSTM MAE = <b>{{ sampleMae.toFixed(4) }}</b> · 真实值波动 <b>{{ actualMin.toFixed(3) }} ~ {{ actualMax.toFixed(3) }}</b>
+        本窗口基准误差 = <b>{{ sampleMae.toFixed(4) }}</b> · 真实值波动 <b>{{ actualMin.toFixed(3) }} ~ {{ actualMax.toFixed(3) }}</b>
       </div>
     </el-card>
 
@@ -45,7 +45,7 @@
     <el-card>
       <template #header>
         <div class="card-header">
-          <span>11 字段 NRMSE 全景对比</span>
+          <span>11 字段预测偏差全景对比</span>
           <el-tag type="info" effect="plain">颜色 = 物理量族</el-tag>
         </div>
       </template>
@@ -58,22 +58,22 @@
             <el-tag :style="{ background: groupColor(row.group) + '22', color: groupColor(row.group), border: 'none' }" size="small">{{ row.group }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="SNR" prop="snr" width="90" align="right">
+        <el-table-column label="信号质量" prop="snr" width="90" align="right">
           <template #default="{ row }">{{ row.snr.toFixed(3) }}</template>
         </el-table-column>
-        <el-table-column label="ACF-16" prop="acfLag16" width="90" align="right">
+        <el-table-column label="稳定性" prop="acfLag16" width="90" align="right">
           <template #default="{ row }">{{ row.acfLag16.toFixed(3) }}</template>
         </el-table-column>
-        <el-table-column label="LSTM MAE" width="110" align="right">
+        <el-table-column label="基准误差" width="110" align="right">
           <template #default="{ row }">{{ row.lstmMae.toFixed(4) }}</template>
         </el-table-column>
-        <el-table-column label="TFM MAE" width="110" align="right">
+        <el-table-column label="智能误差" width="110" align="right">
           <template #default="{ row }">{{ row.tfmMae.toFixed(4) }}</template>
         </el-table-column>
-        <el-table-column label="NRMSE LSTM" width="110" align="right">
+        <el-table-column label="基准偏差" width="110" align="right">
           <template #default="{ row }">{{ row.nrmseLstm.toFixed(1) }}%</template>
         </el-table-column>
-        <el-table-column label="NRMSE TFM" width="110" align="right">
+        <el-table-column label="智能偏差" width="110" align="right">
           <template #default="{ row }">
             <span :style="{ color: row.nrmseTfm < 20 ? '#10B981' : row.nrmseTfm < 35 ? '#F59E0B' : '#EF4444', fontWeight: 600 }">
               {{ row.nrmseTfm.toFixed(1) }}%
@@ -182,7 +182,7 @@ const forecastOption = computed(() => {
         itemStyle: { color: '#0F172A' },
       },
       {
-        name: 'LSTM 预测', type: 'line', data: s.lstm,
+        name: '基准预测', type: 'line', data: s.lstm,
         symbol: 'circle', symbolSize: 5,
         lineStyle: { color: '#EF4444', width: 2, type: 'dashed' },
         itemStyle: { color: '#EF4444' },
@@ -195,23 +195,23 @@ const panoramaOption = computed(() => {
   const fields = summary.value?.fields || []
   return {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-    legend: { top: 0, right: 10, data: ['LSTM', 'TimesFM'] },
+    legend: { top: 0, right: 10, data: ['基准方案', '智能引擎'] },
     grid: { top: 40, left: 60, right: 30, bottom: 60 },
     xAxis: {
       type: 'category', data: fields.map(f => f.field),
       axisLabel: { rotate: 25, fontSize: 11 },
     },
     yAxis: {
-      type: 'value', name: 'NRMSE %',
+      type: 'value', name: '偏差指数 %',
     },
     series: [
       {
-        name: 'LSTM', type: 'bar',
+        name: '基准方案', type: 'bar',
         data: fields.map(f => ({ value: f.nrmseLstm.toFixed(1), itemStyle: { color: groupColor(f.group), opacity: 0.45 } })),
         barGap: 0,
       },
       {
-        name: 'TimesFM', type: 'bar',
+        name: '智能引擎', type: 'bar',
         data: fields.map(f => ({ value: f.nrmseTfm.toFixed(1), itemStyle: { color: groupColor(f.group) } })),
         markLine: {
           silent: true,

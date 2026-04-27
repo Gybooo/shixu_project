@@ -115,10 +115,10 @@
         <v-chart :option="gradePieOption" class="chart" autoresize />
       </div>
 
-      <!-- 右下 · NRMSE Top5 -->
+      <!-- 右下 · 健康表现 Top5 -->
       <div class="dash-panel">
         <div class="panel-title">
-          <span class="arrow">»</span> 模型性能 Top5 <span class="arrow">«</span>
+          <span class="arrow">»</span> 健康表现 Top5 <span class="arrow">«</span>
         </div>
         <v-chart :option="top5Option" class="chart" autoresize />
       </div>
@@ -188,7 +188,7 @@ const AXIS = {
   splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)', type: 'dashed' } },
 }
 
-// 图表 1: 字段健康度柱状图 (各字段 NRMSE)
+// 图表 1: 字段预测偏差柱状图
 const gradeOption = computed(() => ({
   tooltip: {
     trigger: 'axis',
@@ -202,7 +202,7 @@ const gradeOption = computed(() => ({
     ...AXIS,
     axisLabel: { ...AXIS.axisLabel, rotate: 35, fontSize: 10 },
   },
-  yAxis: { type: 'value', ...AXIS, name: 'NRMSE %', nameTextStyle: { color: '#94B4FF', fontSize: 11 } },
+  yAxis: { type: 'value', ...AXIS, name: '偏差指数 %', nameTextStyle: { color: '#94B4FF', fontSize: 11 } },
   series: [{
     type: 'bar',
     data: fields.value.map(f => ({
@@ -287,7 +287,7 @@ const groupOption = computed(() => {
       type: 'category', data: groups, ...AXIS,
       axisLabel: { ...AXIS.axisLabel, fontSize: 11, interval: 0 },
     },
-    yAxis: { type: 'value', ...AXIS, name: 'NRMSE %', nameTextStyle: { color: '#94B4FF', fontSize: 11 } },
+    yAxis: { type: 'value', ...AXIS, name: '健康偏差 %', nameTextStyle: { color: '#94B4FF', fontSize: 11 } },
     series: [{
       type: 'boxplot',
       data: data,

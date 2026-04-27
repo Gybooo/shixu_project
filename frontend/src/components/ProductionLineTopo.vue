@@ -43,11 +43,11 @@
                 <div class="channel-name">{{ f.field }}</div>
               </div>
               <div class="channel-metric">
-                <span class="metric-label">NRMSE</span>
+                <span class="metric-label">预测精度</span>
                 <span class="metric-val">{{ f.nrmseTfm.toFixed(1) }}%</span>
               </div>
               <div class="channel-metric">
-                <span class="metric-label">SNR</span>
+                <span class="metric-label">信号质量</span>
                 <span class="metric-val">{{ f.snr.toFixed(2) }}</span>
               </div>
               <div class="channel-grade" :class="'badge-' + f.grade.toLowerCase()">

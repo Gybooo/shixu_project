@@ -3,7 +3,7 @@
     <PageHeader title="告警策略配置" subtitle="按字段配置振动告警阈值、等级与通知方式" module="系统设置" />
 
     <el-alert type="info" :closable="false" show-icon class="mb-2">
-      当前使用判据 v2 自动分级 · 命中率 11/11 · 如需手动覆盖, 可在本页调整阈值
+      当前使用平台内置智能评估引擎自动分级 · 支持按字段手动覆盖阈值与通知策略
     </el-alert>
 
     <el-card>
@@ -32,12 +32,12 @@
             <el-switch v-model="row.enabled" size="small" />
           </template>
         </el-table-column>
-        <el-table-column label="预警阈值 (NRMSE %)" width="170">
+        <el-table-column label="预警阈值 (偏差指数 %)" width="170">
           <template #default="{ row }">
             <el-input-number v-model="row.warnThreshold" :min="0" :max="100" :step="1" size="small" style="width: 130px;" />
           </template>
         </el-table-column>
-        <el-table-column label="告警阈值 (NRMSE %)" width="170">
+        <el-table-column label="告警阈值 (偏差指数 %)" width="170">
           <template #default="{ row }">
             <el-input-number v-model="row.alertThreshold" :min="0" :max="100" :step="1" size="small" style="width: 130px;" />
           </template>

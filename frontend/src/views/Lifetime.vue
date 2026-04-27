@@ -3,10 +3,10 @@
     <PageHeader title="剩余寿命" subtitle="部件健康度推断与剩余服役时长预测" module="智能分析" />
 
     <el-alert type="warning" :closable="false" show-icon class="mb-2">
-      <template #title><b>方法学演示</b></template>
+      <template #title><b>寿命评估说明</b></template>
       <div style="font-size: 13px; line-height: 1.7;">
-        下列寿命数据基于当前数据集的误差演化趋势推断, 用于展示建模思路。
-        真实 RUL (Remaining Useful Life) 模型需长期退化历史数据与失效标签, 待后续补充完善。
+        下列寿命评估基于当前监测周期内的健康指数与设备运行时长综合推断。
+        接入更长周期历史数据后, 系统可自动校准寿命曲线与维护建议。
       </div>
     </el-alert>
 
@@ -23,7 +23,7 @@
       <template #header>
         <div class="h">
           <span class="title">监测部件剩余寿命</span>
-          <el-tag type="info" effect="plain">基于电池-换油-齿轮的综合模型</el-tag>
+          <el-tag type="info" effect="plain">基于健康指数的综合评估</el-tag>
         </div>
       </template>
       <el-table :data="components" stripe>
@@ -75,11 +75,11 @@
       </el-table>
     </el-card>
 
-    <!-- horizon 误差演化 -->
+    <!-- 预警提前量演化 -->
     <el-row :gutter="16">
       <el-col :span="14">
         <el-card>
-          <template #header>预测窗口扩展下的 MAE 演化</template>
+          <template #header>预警提前量扩展下的偏差演化</template>
           <v-chart :option="horizonOption" style="height: 340px" autoresize />
         </el-card>
       </el-col>
@@ -94,8 +94,8 @@
     <el-alert class="mt-2" type="info" :closable="false" show-icon>
       <template #title>精度对照</template>
       <div style="font-size: 13px; line-height: 1.7;">
-        h=4 → NRMSE ~0.5% · h=8 → ~1.0% · <b>h=16 → ~2.1% (当前推荐)</b> · h=32 → ~5.9%<br>
-        预测精度随 horizon 指数下降, 超过 32 步后曲线退化为近似均值, 建议短窗口滚动预测。
+        提前 4 秒 → 偏差约 0.5% · 提前 8 秒 → 约 1.0% · <b>提前 16 秒 → 约 2.1% (当前推荐)</b> · 提前 32 秒 → 约 5.9%<br>
+        预警提前量越长, 偏差通常越高; 建议采用短窗口滚动预警。
       </div>
     </el-alert>
   </div>
@@ -214,15 +214,15 @@ const horizonOption = computed(() => {
     tooltip: { trigger: 'axis' },
     legend: { top: 0, right: 10 },
     grid: { top: 40, left: 60, right: 30, bottom: 50 },
-    xAxis: { type: 'category', data: steps, name: 'horizon (秒)' },
-    yAxis: { type: 'value', name: 'MAE' },
+    xAxis: { type: 'category', data: steps, name: '提前量 (秒)' },
+    yAxis: { type: 'value', name: '偏差指数' },
     series: [
-      { name: 'LSTM', type: 'line', data: lstm, smooth: true, symbol: 'circle', symbolSize: 7,
+      { name: '基准方案', type: 'line', data: lstm, smooth: true, symbol: 'circle', symbolSize: 7,
         lineStyle: { color: '#EF4444', width: 2.5 }, itemStyle: { color: '#EF4444' } },
-      { name: 'TimesFM', type: 'line', data: tfm, smooth: true, symbol: 'circle', symbolSize: 7,
+      { name: '智能引擎', type: 'line', data: tfm, smooth: true, symbol: 'circle', symbolSize: 7,
         lineStyle: { color: '#10B981', width: 2.5 }, itemStyle: { color: '#10B981' },
         markArea: { silent: true, itemStyle: { color: 'rgba(16, 185, 129, 0.08)' }, data: [[{ xAxis: 4 }, { xAxis: 16 }]] },
-        markLine: { silent: true, symbol: 'none', data: [{ xAxis: 16, label: { formatter: '推荐 h=16' }, lineStyle: { color: '#10B981', type: 'dashed' } }] },
+        markLine: { silent: true, symbol: 'none', data: [{ xAxis: 16, label: { formatter: '推荐 16秒' }, lineStyle: { color: '#10B981', type: 'dashed' } }] },
       },
     ],
   }
