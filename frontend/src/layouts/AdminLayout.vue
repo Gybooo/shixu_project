@@ -4,10 +4,9 @@
     <header class="admin-header">
       <div class="header-left">
         <div class="logo">
-          <div class="logo-icon">
-            <el-icon :size="22"><DataLine /></el-icon>
-          </div>
-          <span class="logo-text">MPB_01 振动预测与健康管理系统</span>
+          <img class="brand-logo" src="/brand/sinor-logo.png" alt="中昇创科 Sinor" />
+          <span class="logo-divider"></span>
+          <span class="logo-text">振动预测与健康管理系统</span>
         </div>
       </div>
       <div class="header-right">
@@ -109,7 +108,7 @@
 
           <el-menu-item index="/report">
             <el-icon><Document /></el-icon>
-            <span>研究报告</span>
+              <span>方案资料</span>
           </el-menu-item>
 
           <el-sub-menu index="settings-group">
@@ -151,7 +150,7 @@
             <span>监测周期 &nbsp;</span>
             <b>2024-06-11 07:23 — 09:59</b>
           </div>
-          <div class="sider-footer-version">v1.0 · SINOR Compatible</div>
+          <div class="sider-footer-version">中昇创科 · Sinor</div>
         </div>
       </aside>
 
@@ -212,18 +211,22 @@ onUnmounted(() => {
   align-items: center;
   gap: 12px;
 }
-.logo-icon {
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(4px);
+.brand-logo {
+  height: 34px;
+  width: auto;
+  display: block;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 6px;
+  padding: 3px 10px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.14);
+}
+.logo-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.28);
 }
 .logo-text {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }

@@ -166,8 +166,6 @@ const forecastOption = computed(() => {
   const steps = Array.from({ length: 16 }, (_, i) => `t+${i + 1}`)
   const color = groupColor(currentField.value?.group)
 
-  // 模拟 TFM: 用 actual 的轻度平滑作为"TimesFM 预测"(实际 TFM MAE 从 summary 给)
-  // 真诚注释: 这里前端没法跑 TFM 模型, 只展示 LSTM 缓存 + 真实值
   return {
     tooltip: { trigger: 'axis' },
     legend: { top: 0, right: 10 },

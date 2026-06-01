@@ -8,6 +8,7 @@
       </div>
       <div class="dash-header-center">
         <div class="dash-title-bar">
+          <img class="dash-brand-logo" src="/brand/sinor-logo.png" alt="中昇创科 Sinor" />
           <span class="dash-title-deco">◆</span>
           <span class="dash-title-text">机器人振动预测性维护系统</span>
           <span class="dash-title-deco">◆</span>
@@ -359,15 +360,24 @@ const groupOption = computed(() => {
   background: linear-gradient(180deg, rgba(79, 124, 255, 0.25), rgba(15, 38, 103, 0.85));
   border-top: 2px solid #4F7CFF;
   border-bottom: 2px solid #4F7CFF;
-  padding: 8px 46px;
+  padding: 7px 42px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   box-shadow: 0 0 24px rgba(79, 124, 255, 0.4);
   clip-path: polygon(30px 0%, 100% 0%, calc(100% - 30px) 100%, 0% 100%);
 }
+.dash-brand-logo {
+  height: 34px;
+  width: auto;
+  display: block;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 5px;
+  padding: 2px 8px;
+  box-shadow: 0 0 12px rgba(79, 124, 255, 0.35);
+}
 .dash-title-text {
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 700;
   letter-spacing: 0.2em;
   background: linear-gradient(180deg, #E0F0FF, #7AB8FF);

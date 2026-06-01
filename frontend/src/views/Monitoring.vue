@@ -87,7 +87,6 @@ watch([() => summary.value, () => timeseries.value], () => draw())
 function draw() {}  // placeholder; computed 自动更新
 function onSelect(field) { selectedField.value = field }
 
-// SavGol 近似: 移动均值 (前端不做完整 SavGol, 用滚动均值近似趋势)
 function rollingMean(arr, window) {
   const out = new Array(arr.length).fill(null)
   const half = Math.floor(window / 2)

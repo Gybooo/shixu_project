@@ -46,7 +46,7 @@
       <template #header>
         <div class="card-header">
           <span>告警事件列表 ({{ filteredEvents.length }})</span>
-          <el-tag type="info" effect="plain">基于 Magnitude 骤降阈值 z=3.0, 最短 3s</el-tag>
+          <el-tag type="info" effect="plain">平台内置异常识别规则 · 最短持续 3s</el-tag>
         </div>
       </template>
 

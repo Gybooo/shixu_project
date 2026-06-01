@@ -47,7 +47,7 @@ const routes = [
       {
         path: 'report',
         component: () => import('@/views/Report.vue'),
-        meta: { title: '研究报告', icon: 'Document' },
+        meta: { title: '方案资料', icon: 'Document' },
       },
       {
         path: 'settings/users',
@@ -85,7 +85,7 @@ const router = createRouter({
 
 router.afterEach((to) => {
   if (to.meta?.title) {
-    document.title = `${to.meta.title} · MPB_01 振动预测平台`
+    document.title = `${to.meta.title} · 中昇创科振动预测平台`
   }
 })
 

@@ -110,15 +110,10 @@ const gradeFilter = ref(null)
 
 const groups = computed(() => Array.from(new Set(props.fields.map(f => f.group))))
 
-// 为每个字段计算 4 个维度的健康度 (基于真实的 NRMSE/SNR/ACF)
 const enriched = computed(() => props.fields.map(f => {
-  // 信号健康 = 1 - NRMSE/100 归一化
   const healthSignal = Math.max(0, Math.min(100, 100 - f.nrmseTfm * 1.5))
-  // 预测健康 = NRMSE 直接反比
   const healthForecast = Math.max(0, Math.min(100, 100 - f.nrmseTfm * 2))
-  // 冗余健康 = SNR 映射 (>1.5 → 95, <0.5 → 30)
   const healthRedundancy = Math.max(0, Math.min(100, f.snr * 50))
-  // 稳定性 = ACF lag-16
   const healthStability = Math.max(0, Math.min(100, f.acfLag16 * 100))
   return { ...f, healthSignal, healthForecast, healthRedundancy, healthStability }
 }))

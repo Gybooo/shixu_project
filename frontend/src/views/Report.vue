@@ -25,25 +25,20 @@
       <div class="scenario-metric" :style="{ color: s.color }">{{ s.metric }}</div>
     </div>
 
-    <!-- 下载 -->
-    <div class="section-title mt-3">资料下载</div>
-    <el-row :gutter="14">
-      <el-col v-for="d in downloads" :key="d.name" :span="12">
-        <el-card class="dl-card">
-          <div class="dl-row">
-            <div class="dl-icon"><el-icon :size="24"><Document /></el-icon></div>
-            <div class="dl-content">
-              <div class="dl-name">{{ d.name }}</div>
-              <div class="dl-desc">{{ d.desc }}</div>
-            </div>
-            <a :href="d.url" :download="d.filename"
-               target="_blank" class="dl-btn">
-              <el-icon><Download /></el-icon> 下载
-            </a>
+    <!-- 资料获取 -->
+    <div class="section-title mt-3">资料获取</div>
+    <el-card class="material-card">
+      <div class="material-row">
+        <div class="material-icon"><el-icon :size="26"><Document /></el-icon></div>
+        <div class="material-content">
+          <div class="material-title">客户方案资料</div>
+          <div class="material-desc">
+            如需完整方案书、部署清单或接口说明, 请联系项目负责人获取正式版本。
           </div>
-        </el-card>
-      </el-col>
-    </el-row>
+        </div>
+        <el-tag type="primary" effect="plain">受控资料</el-tag>
+      </div>
+    </el-card>
 
     <!-- 技术栈 -->
     <el-card class="mt-3">
@@ -79,7 +74,7 @@
 </template>
 
 <script setup>
-import { Document, Download } from '@element-plus/icons-vue'
+import { Document } from '@element-plus/icons-vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 const findings = [
@@ -100,24 +95,6 @@ const scenarios = [
   { label: '场景五', scene: '冲击信号监控', config: '脉冲事件识别 + 人工复核 + 专项阈值', metric: '专项策略', color: '#EF4444' },
 ]
 
-const downloads = [
-  { name: '研究报告 (PPT)',
-    filename: 'MPB_01振动预测研究报告.pptx',
-    url: import.meta.env.BASE_URL + 'downloads/report.pptx',
-    desc: '完整汇报材料, 覆盖系统能力、页面展示、数据概览与部署建议' },
-  { name: '全字段对比表 (CSV)',
-    filename: '全字段泛化测试.csv',
-    url: import.meta.env.BASE_URL + 'downloads/fields-summary.csv',
-    desc: '11 字段的预测精度 / 信号质量 / 长程稳定性 / 可用性档位汇总' },
-  { name: '全字段验证报告 (MD)',
-    filename: '全字段验证报告.md',
-    url: import.meta.env.BASE_URL + 'downloads/validation-report.md',
-    desc: '系统验证过程、主要发现与落地建议' },
-  { name: '多属性结果 (CSV)',
-    filename: '多属性泛化测试_v2.csv',
-    url: import.meta.env.BASE_URL + 'downloads/multifield-results.csv',
-    desc: '4 个代表字段的详细指标, 含预测精度 / 信号质量 / 引擎提升幅度' },
-]
 </script>
 
 <style lang="scss" scoped>
@@ -180,33 +157,25 @@ const downloads = [
 .scenario-config { font-size: 12.5px; color: var(--text-mid); font-family: Consolas, monospace; }
 .scenario-metric { font-size: 13px; font-weight: 600; text-align: right; }
 
-.dl-card {
-  height: 100%;
+.material-card {
+  border-left: 4px solid var(--primary-light);
 }
-.dl-row { display: flex; align-items: center; gap: 12px; }
-.dl-icon {
+.material-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.material-icon {
   background: rgba(79, 124, 255, 0.12);
   color: var(--primary-light);
-  width: 44px; height: 44px;
+  width: 48px; height: 48px;
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.dl-content { flex: 1; min-width: 0; }
-.dl-name { font-size: 14.5px; font-weight: 600; margin-bottom: 3px; }
-.dl-desc { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
-.dl-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 6px 14px;
-  background: linear-gradient(135deg, #4F7CFF, #7C3AED);
-  color: white; text-decoration: none;
-  border-radius: 6px;
-  font-size: 12.5px; font-weight: 600;
-  transition: all 0.18s;
-  &:hover {
-    box-shadow: 0 4px 12px rgba(79, 124, 255, 0.35);
-  }
-}
+.material-content { flex: 1; min-width: 0; }
+.material-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.material-desc { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
 
 .tech-row {
   padding: 8px 0;

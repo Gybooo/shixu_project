@@ -9,7 +9,7 @@
     <div v-if="subtitle" class="page-subtitle">{{ subtitle }}</div>
     <div class="page-breadcrumb">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>MPB_01 平台</el-breadcrumb-item>
+        <el-breadcrumb-item>中昇创科平台</el-breadcrumb-item>
         <el-breadcrumb-item v-if="module">{{ module }}</el-breadcrumb-item>
         <el-breadcrumb-item>{{ title }}</el-breadcrumb-item>
       </el-breadcrumb>
