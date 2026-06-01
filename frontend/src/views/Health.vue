@@ -6,7 +6,7 @@
       </template>
     </PageHeader>
 
-    <!-- 判据象限图 -->
+    <!-- 健康评估象限 -->
     <el-card class="mb-2">
       <template #header>
         <div class="card-header">
@@ -51,7 +51,7 @@
                 <span>信号质量 <span class="hint">(有效趋势信息强度)</span></span>
                 <b>{{ snr.toFixed(2) }}</b>
               </div>
-              <el-slider v-model="snr" :min="0" :max="3" :step="0.05" :marks="{ 0.5: 'red', 1.3: 'A' }" />
+              <el-slider v-model="snr" :min="0" :max="3" :step="0.05" :marks="{ 0.5: 'C', 1.3: 'A' }" />
             </el-form-item>
 
             <el-form-item>

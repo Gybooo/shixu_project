@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader title="方案资料" subtitle="系统能力 · 业务价值 · 资料下载" />
+    <PageHeader title="方案资料" subtitle="系统能力 · 业务价值 · 资料获取" />
 
     <!-- 7 大发现 -->
     <div class="section-title">七项系统能力</div>

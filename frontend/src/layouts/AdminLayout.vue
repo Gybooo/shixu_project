@@ -212,7 +212,7 @@ onUnmounted(() => {
   gap: 12px;
 }
 .brand-logo {
-  height: 34px;
+  height: 36px;
   width: auto;
   display: block;
   background: rgba(255, 255, 255, 0.96);
@@ -228,7 +228,8 @@ onUnmounted(() => {
 .logo-text {
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 .header-right {
   display: flex;

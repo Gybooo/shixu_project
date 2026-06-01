@@ -22,7 +22,7 @@
         <el-col :span="14">
           <div class="stats-row" v-if="currentField">
             <div class="stat"><span class="stat-label">均值</span><span class="stat-val">{{ currentField.mean.toFixed(3) }}</span></div>
-            <div class="stat"><span class="stat-label">趋势 std</span><span class="stat-val">{{ currentField.trendStd.toFixed(3) }}</span></div>
+            <div class="stat"><span class="stat-label">趋势波动</span><span class="stat-val">{{ currentField.trendStd.toFixed(3) }}</span></div>
             <div class="stat"><span class="stat-label">信号质量</span><span class="stat-val">{{ currentField.snr.toFixed(2) }}</span></div>
             <div class="stat"><span class="stat-label">稳定性</span><span class="stat-val">{{ currentField.acfLag16.toFixed(3) }}</span></div>
             <div class="stat"><span class="stat-label">状态</span>
